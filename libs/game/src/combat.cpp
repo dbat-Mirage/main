@@ -4067,16 +4067,13 @@ void hurt(int limb, int chance, struct char_data *ch, struct char_data *vict, st
    advanced_energy(vict, dmg);
    dmg -= (dmg * 0.0005) * GET_WIS(vict);
   }
-  // Leech bonus trait reduces damage by 2% per 5 levels, up to 40% at level 100 and above
-  if (GET_BONUS(vict, BONUS_LEECH)) {
-   if (type > 0) {
-    dmg -= dmg * (((GET_LEVEL(vict) / 5) * 0.02));
+
+  if (IS_MUTANT(vict)) {  
+   if (type <= 0) {
+    dmg -= dmg * 0.3;
    }
-  }
-  // Fireproof bonus trait reduces damage by 10% from ki attacks
-  if (GET_BONUS(vict, BONUS_FIREPROOF)) {
-   if (type > 0) {
-    dmg -= dmg * 0.1;
+   else if (type > 0) {
+    dmg -= dmg * 0.25;
    }
   }
 
@@ -4096,14 +4093,6 @@ void hurt(int limb, int chance, struct char_data *ch, struct char_data *vict, st
 
   if (PLR_FLAGGED(vict, PLR_FURY)) {
     dmg -= dmg * 0.1;
-  }
-  if (IS_MUTANT(vict)) {  
-   if (type <= 0) {
-    dmg -= dmg * 0.3;
-   }
-   else {
-    dmg -= dmg * 0.25;
-   }
   }
 
   if (IS_MAJIN(vict)) {
